@@ -1,0 +1,18 @@
+/* Estilos para cart.html */
+
+#detalle-productos {
+    display: flex;
+    flex-direction: column; /* Muestra los productos en una columna */
+    align-items: center; /* Centra los productos horizontalmente */
+  }
+  
+  #detalle-productos div {
+    width: 100%; /* Ajusta el ancho para ocupar el contenedor */
+    max-width: 15rem; /* Opcional: define un ancho máximo para los elementos */
+    margin-bottom: 1rem; /* Espacio entre los elementos */
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+    background-color: #fff;
+  }
