@@ -1,15 +1,22 @@
 [
-    {
-      "nombre": "Remera Básica",
-      "precio": 500
-    },
-    {
-      "nombre": "Remera Estampada",
-      "precio": 700
-    },
-    {
-      "nombre": "Remera Premium",
-      "precio": 900
-    }
-  ]
-  
+  {
+    "nombre": "Remera Básica",
+    "precio": 500,
+    "imagen": "../images/remeraModelo1.jpg"
+  },
+  {
+    "nombre": "Remera Estampada",
+    "precio": 700,
+    "imagen": "../images/remeraModelo2.jpg"
+  },
+  {
+    "nombre": "Remera Premium",
+    "precio": 900,
+    "imagen": "../images/remeraModelo3.jpg"
+  },
+{
+    "nombre": "Remera Premium",
+    "precio": 1200,
+    "imagen": "../images/remeraModelo4.jpg"
+  }
+]

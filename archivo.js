@@ -15,28 +15,18 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('nombre', nombre);
         localStorage.setItem('apellido', apellido);
 
-        Swal.fire({
-          icon: 'success',
-          title: '¡Éxito!',
-          text: `¡Hola ${nombre}! Bienvenido a la tienda Yonkys`,
-          timer: 2000,
-          showConfirmButton: false
-        }).then(() => {
+        mensajeBienvenidaDiv.textContent = `¡Hola ${nombre}! Bienvenido a la tienda Yonkys`;
+        mensajeBienvenidaDiv.classList.remove('d-none');
+
+        setTimeout(() => {
           window.location.href = 'pages/carrito.html'; // Verifica la ruta
-        });
+        }, 2000); // Espera 2 segundos antes de redirigir
 
       } else {
-        Swal.fire({
-          icon: 'error',
-          title: '¡Error!',
-          text: 'Por favor, ingrese su nombre y apellido.',
-          timer: 3000,
-          showConfirmButton: false
-        });
+        mostrarMensaje('Por favor, ingrese su nombre y apellido.', 'error');
       }
     });
   } else {
-    // Lógica de la página del carrito de compras
     fetch('productos.json')
       .then(response => response.json())
       .then(productos => {
@@ -59,10 +49,8 @@ document.addEventListener('DOMContentLoaded', () => {
             : totalProductosSinDescuento;
 
           detalleProductosDiv.innerHTML = productosSeleccionados.map(({ producto, cantidad, totalSinDescuento }, index) => `
-            <div>
-              Producto ${index + 1}: ${producto} - Cantidad: ${cantidad} - Total: ${totalSinDescuento} pesos argentinos
-              <button class="btn btn-danger btn-sm" data-index="${index}">Eliminar</button>
-            </div>
+            Producto ${index + 1}: ${producto} - Cantidad: ${cantidad} - Total: ${totalSinDescuento} pesos argentinos
+            <button class="btn btn-danger btn-sm" data-index="${index}">Eliminar</button>
           `).join('');
 
           totalCompraDiv.innerHTML = `
@@ -73,8 +61,9 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         const mostrarOpcionesProductos = () => {
-          listaProductosDiv.innerHTML = productos.map(({ nombre, precio }, index) => `
+          listaProductosDiv.innerHTML = productos.map(({ nombre, precio, imagen }, index) => `
             <div class="card product-card" style="width: 16rem;">
+              <img src="${imagen}" class="card-img-top" alt="${nombre}">
               <div class="card-body">
                 <h5 class="card-title">${nombre}</h5>
                 <p class="card-text">Precio: ${precio}$</p>
@@ -94,13 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 seleccionarProducto(productos[index], cantidad);
                 cantidadInput.value = ''; // Limpiar el input después de agregar el producto
               } else {
-                Swal.fire({
-                  icon: 'error',
-                  title: '¡Error!',
-                  text: 'La cantidad ingresada no es válida.',
-                  timer: 3000,
-                  showConfirmButton: false
-                });
+                mostrarMensaje('Error: La cantidad ingresada no es válida.', 'error');
               }
             });
           });
@@ -133,14 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
         finalizarCompraButton.addEventListener('click', () => {
           const totalConDescuento = productosSeleccionados.reduce((total, { cantidad, totalSinDescuento }) => total + (totalSinDescuento * (1 - (productosSeleccionados.reduce((total, { cantidad }) => total + cantidad, 0) >= 3 ? 0.1 : 0))), 0);
 
-          Swal.fire({
-            icon: 'success',
-            title: 'Compra Finalizada',
-            text: `Total a pagar: ${totalConDescuento} pesos argentinos.`,
-            timer: 3000,
-            showConfirmButton: false
-          });
-
+          mostrarMensaje(`Compra finalizada. Total a pagar: ${totalConDescuento} pesos argentinos.`, 'success');
           localStorage.removeItem('productosSeleccionados');
           productosSeleccionados = [];
           actualizarDetalleCompra();
@@ -151,4 +127,13 @@ document.addEventListener('DOMContentLoaded', () => {
       })
       .catch(error => console.error('Error al cargar los productos:', error));
   }
+
+  const mostrarMensaje = (mensaje, tipo) => {
+    Swal.fire({
+      title: tipo === 'error' ? 'Error' : 'Éxito',
+      text: mensaje,
+      icon: tipo === 'error' ? 'error' : 'success',
+      confirmButtonText: 'OK'
+    });
+  };
 });
